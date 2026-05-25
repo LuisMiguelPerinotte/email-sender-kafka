@@ -1,3 +1,24 @@
 spring:
-  application:
-    name: email-api
+  server:
+    port: ${PORT:8080}
+
+  datasource:
+    url: ${LOCAL_POSTGRES_DB_URL}
+    username: ${LOCAL_POSTGRES_DB_USER}
+    password: ${LOCAL_POSTGRES_DB_PASSWORD}
+
+  jpa:
+    hibernate.ddl-auto: validate
+    show-sql: true
+
+  config:
+    import: optional:file:.env[.properties]
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+
+  kafka:
+    bootstrap-servers:  ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
