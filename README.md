@@ -1,0 +1,1 @@
+Event-driven email sending service built with Spring Boot and Apache Kafka.
