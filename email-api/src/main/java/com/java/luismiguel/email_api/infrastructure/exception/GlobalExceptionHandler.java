@@ -4,6 +4,7 @@ import com.java.luismiguel.email_api.infrastructure.exception.business.BusinessE
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -69,5 +70,20 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Object> handleMethodNotSupported(HttpRequestMethodNotSupportedException exception, HttpServletRequest request) {
+        String message = "HTTP method " + exception.getMethod() + " is not supported for this endpoint";
+
+        HashMap<String, Object> body = errorBuilder(
+                HttpStatus.METHOD_NOT_ALLOWED,
+                HttpStatus.METHOD_NOT_ALLOWED.name(),
+                message,
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(body, HttpStatus.METHOD_NOT_ALLOWED);
     }
 }
