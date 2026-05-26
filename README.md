@@ -1,21 +1,15 @@
-# Email Sender Kafka
+## 📨 Email Sender Kafka
 
 Asynchronous email sending API built with Spring Boot and Apache Kafka.
 
 The main goal of this project is to demonstrate asynchronous communication using Kafka, email request persistence, and event-driven architecture concepts.
 
----
 
-## Project Status
+> **Project Status:** In development 🚧 — contributions, issues and pull requests are welcome.
 
-### 🚧 In Progress
 
-This project is currently under active development.
-Core asynchronous email request processing is already implemented, while worker processing, retry mechanisms, DLQ handling and automated tests are still in progress.
-
----
-
-# Architecture
+&nbsp;&nbsp;&nbsp;
+## 🏗️ Architecture
 
 ```text
 Client
@@ -26,12 +20,26 @@ PostgreSQL
    ↓
 Kafka Topic: email.send.requested
    ↓
-email-worker (WIP)
+email-worker
+   ↓
+Mailpit SMTP Server
 ```
 
----
 
-# Tech Stack
+&nbsp;&nbsp;&nbsp;
+## ⚙️ Email Processing Flow
+
+1. Client sends a request to `POST /emails`
+2. API stores the email request as `PENDING`
+3. API publishes an event to Kafka
+4. Worker consumes the event
+5. Worker updates the status to `PROCESSING`
+6. Worker sends the email using Mailpit
+7. Worker updates the status to `SENT` or `FAILED`
+
+
+&nbsp;&nbsp;&nbsp;
+## 🛠️ Tech Stack
 
 * Java 21
 * Spring Boot 3
@@ -41,63 +49,67 @@ email-worker (WIP)
 * Flyway
 * Docker
 * Lombok
-* Mailpit (WIP)
+* Mailpit
 * Kafka UI
 
----
 
-# Current Features
+&nbsp;&nbsp;&nbsp;
+## ✨ Current Features
 
-* Create email sending requests
-* Persist requests into PostgreSQL
-* Publish events to Kafka
-* Retrieve email request status
-* Handle Kafka publishing failures
+- Create asynchronous email requests
+- Persist email requests into PostgreSQL
+- Publish events to Kafka
+- Consume Kafka events using a worker service
+- Send emails through Mailpit SMTP server
+- Track email processing status
+- Handle Kafka publishing failures
 
----
 
-# Email Request Status
+&nbsp;&nbsp;&nbsp;
+## 📌 Email Request Status
 
 | Status         | Description                                      |
 | -------------- | ------------------------------------------------ |
 | PENDING        | Email request created and waiting for processing |
 | PUBLISH_FAILED | Failed to publish event to Kafka                 |
+| PROCESSING     | Email is being processed by the worker           |
+| SENT           | Email successfully sent                          |
+| FAILED         | Error while sending email                        |
 
----
 
-# Project Structure
+&nbsp;&nbsp;&nbsp;
+## 📂 Project Structure
 
 ```text
 email-sender-kafka/
 ├── email-api/
-├── email-worker/ (WIP)
+├── email-worker/
 ├── docker-compose.yml
 └── README.md
 ```
 
----
 
-# Local Infrastructure
+&nbsp;&nbsp;&nbsp;
+## 🐳 Local Infrastructure
 
 The project uses Docker Compose to run:
 
-* PostgreSQL
-* Apache Kafka
-* Kafka UI
+- PostgreSQL
+- Apache Kafka
+- Kafka UI
+- Mailpit
 
----
 
-# Running the Project
+&nbsp;&nbsp;&nbsp;
+## 🚀 Running the Project
 
-## 1. Clone the repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/your-username/email-sender-kafka.git
 ```
 
----
-
-## 2. Configure environment variables
+### 2. Configure environment variables
 
 Create a `.env` file at the project root:
 
@@ -107,31 +119,27 @@ LOCAL_POSTGRES_DB_USER=postgres
 LOCAL_POSTGRES_DB_PASSWORD=postgres
 ```
 
----
-
-## 3. Start containers
+### 3. Start containers
 
 ```bash
 docker compose up -d
 ```
 
----
-
-## 4. Run the application
+### 4. Run the application
 
 Start the `email-api` module.
 
----
 
-# API Endpoints
+&nbsp;&nbsp;&nbsp;
+## 🌐 API Endpoints
 
-## Create email request
+### Create email request
 
 ```http
 POST /emails
 ```
 
-### Request
+**Request**
 
 ```json
 {
@@ -141,7 +149,7 @@ POST /emails
 }
 ```
 
-### Response
+**Response**
 
 ```json
 {
@@ -150,15 +158,15 @@ POST /emails
 }
 ```
 
----
 
-## Get email request by ID
+&nbsp;&nbsp;&nbsp;
+### Get email request by ID
 
 ```http
 GET /emails/{id}
 ```
 
-### Response
+**Response**
 
 ```json
 {
@@ -171,17 +179,17 @@ GET /emails/{id}
 }
 ```
 
----
 
-# Kafka
+&nbsp;&nbsp;&nbsp;
+## 📡 Kafka
 
-## Topic
+### Topic
 
 ```text
 email.send.requested
 ```
 
-## Published Event
+### Published Event
 
 ```json
 {
@@ -189,14 +197,24 @@ email.send.requested
 }
 ```
 
----
 
-# Next Steps
+&nbsp;&nbsp;&nbsp;
+## 📬 Mailpit
 
-* Implement `email-worker`
-* Asynchronous email processing
-* Mailpit integration
-* Retry mechanism
-* Dead Letter Queue (DLQ)
-* Automated tests
-* Metrics and observability
+Mailpit is used as a local SMTP server for development and testing.
+
+### Mailpit UI
+
+```text
+http://localhost:8025
+```
+
+
+&nbsp;&nbsp;&nbsp;
+## 📈 Next Steps
+
+- Retry mechanism
+- Dead Letter Queue (DLQ)
+- Automated tests
+- Metrics and observability
+- Dockerization improvements
