@@ -15,10 +15,7 @@ spring:
     import: optional:file:.env[.properties]
 
   flyway:
-    enabled: true
-    baseline-on-migrate: true
-    baseline-version: 0
-    locations: classpath:db/migration
+    enabled: false
 
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
