@@ -1,3 +1,37 @@
 spring:
-  application:
-    name: email-worker
+  server:
+    port: ${PORT:8082}
+
+  datasource:
+    url: ${LOCAL_POSTGRES_DB_URL}
+    username: ${LOCAL_POSTGRES_DB_USER}
+    password: ${LOCAL_POSTGRES_DB_PASSWORD}
+
+  jpa:
+    hibernate.ddl-auto: validate
+    show-sql: true
+
+  config:
+    import: optional:file:.env[.properties]
+
+  flyway:
+    enabled: false
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+
+  mail:
+    host: localhost
+    port: 1025
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+  app:
+    mail:
+      from: no-reply@email-sender.local

@@ -35,3 +35,10 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
     depends_on:
       - kafka
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit-local
+    ports:
+      - "1025:1025"
+      - "8025:8025"
