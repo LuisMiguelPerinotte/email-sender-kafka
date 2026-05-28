@@ -1,7 +1,5 @@
 ## 📨 Email Sender Kafka
 
----
-
 ![Java](https://img.shields.io/badge/Java-21-orange?style=flat&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.14-brightgreen?style=flat&logo=springboot&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -15,8 +13,6 @@
 
 
 ## ✨ Overview
-
----
 
 Asynchronous email sending API built with Spring Boot and Apache Kafka.
 
@@ -58,7 +54,6 @@ flowchart LR
 
 ## 📂 Project Structure
 
----
 
 ```text
 email-sender-kafka/
@@ -71,8 +66,6 @@ email-sender-kafka/
 
 
 ## 🔁 Retry and DLT
-
----
 
 The worker uses Kafka retry and Dead Letter Topic (DLT) mechanisms to improve reliability during temporary failures such as SMTP connection issues.
 
@@ -114,8 +107,6 @@ Messages published to the DLT are kept for later inspection or manual reprocessi
 
 ## 🗃️ Data Model
 
----
-
 The current data model is intentionally simple. The system stores email sending requests in a single table called `email_requests`.
 
 | Field              | Description                              |
@@ -136,8 +127,6 @@ The current data model is intentionally simple. The system stores email sending 
 
 ## 📌 Email Request Status
 
----
-
 | Status         | Description                                      |
 | -------------- | ------------------------------------------------ |
 | PENDING        | Email request created and waiting for processing |
@@ -150,8 +139,6 @@ The current data model is intentionally simple. The system stores email sending 
 
 
 ## ✨ Current Features
-
----
 
 - Create asynchronous email requests
 - Persist email requests into PostgreSQL
@@ -168,8 +155,6 @@ The current data model is intentionally simple. The system stores email sending 
 
 ## 🐳 Local Infrastructure
 
----
-
 The project uses Docker Compose to run:
 
 - PostgreSQL
@@ -181,8 +166,6 @@ The project uses Docker Compose to run:
 
 
 ## 🚀 Running the Project
-
----
 
 ### 1. Clone the repository
 
@@ -215,15 +198,26 @@ Start the `email-api` module.
 
 ## 🌐 API Endpoints
 
----
+| Method |   Endpoint    |             Description              |
+|--------|---------------|--------------------------------------|
+| `POST` | `/emails`     | Create an asynchronous email request |
+| `GET`  | `/emails/{id}`| Get email request status             |
 
-### Create email request
+&nbsp;&nbsp;&nbsp;
+### POST `/emails`
 
-```http
-POST /emails
+Creates a new email request and publishes an event to Kafka.
+
+**Request body**
+
+```json
+{
+  "emailRequestId": "uuid",
+  "status": "PENDING"
+}
 ```
 
-**Request**
+Response `202 Accepted`
 
 ```json
 {
@@ -233,24 +227,12 @@ POST /emails
 }
 ```
 
-**Response**
-
-```json
-{
-  "emailRequestId": "uuid",
-  "status": "PENDING"
-}
-```
 &nbsp;&nbsp;&nbsp;
+### GET `/emails/{id}`
 
+Returns the current status of an email request.
 
-### Get email request by ID
-
-```http
-GET /emails/{id}
-```
-
-**Response**
+Response `200 OK`
 
 ```json
 {
@@ -262,12 +244,11 @@ GET /emails/{id}
   "createdAt": "2026-05-25T12:00:00"
 }
 ```
+
 &nbsp;&nbsp;&nbsp;
 
 
 ## 📡 Kafka
-
----
 
 Apache Kafka is used as the asynchronous communication layer between the API and the worker service.
 
@@ -297,8 +278,6 @@ flowchart LR
 
 ## 📬 Mailpit
 
----
-
 Mailpit is used as a local SMTP server for development and testing purposes.
 
 Instead of sending real emails, all outgoing messages are captured locally and can be inspected through the Mailpit web interface.
@@ -322,8 +301,6 @@ http://localhost:8025
 
 
 ## 📈 Next Steps
-
----
 
 - Automated tests
 - Metrics and observability
