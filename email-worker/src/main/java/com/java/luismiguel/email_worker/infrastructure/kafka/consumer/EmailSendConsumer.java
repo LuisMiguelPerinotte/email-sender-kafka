@@ -15,7 +15,8 @@ public class EmailSendConsumer {
 
     @KafkaListener(
             topics = "email.send.requested",
-            groupId = "email-worker-group"
+            groupId = "email-worker-group",
+            containerFactory = "kafkaListenerContainerFactory"
     )
     public void consume(EmailSendRequestedEvent event) {
         log.info("Email send requested received. emailRequestId={}", event.emailRequestId());

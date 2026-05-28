@@ -30,6 +30,7 @@ public class EmailSendingService {
                 .orElseThrow(EmailRequestNotFoundException::new);
 
         emailRequest.setAttempts(emailRequest.getAttempts() + 1);
+        log.info("Attempt Number {}", emailRequest.getAttempts());
         emailRequest.setStatus(EmailRequestStatus.PROCESSING);
 
         emailRequestRepository.save(emailRequest);
@@ -49,7 +50,10 @@ public class EmailSendingService {
         } catch (MailException e) {
             emailRequest.setStatus(EmailRequestStatus.FAILED);
             emailRequest.setErrorMessage(e.getMessage());
+            emailRequestRepository.save(emailRequest);
+
             log.error("error sending E-mail. E-mail Request Id= {}", emailRequestId);
+            throw e;
         }
 
         emailRequestRepository.save(emailRequest);
