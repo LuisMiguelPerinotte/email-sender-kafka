@@ -50,7 +50,10 @@ public class EmailSendingService {
         } catch (MailException e) {
             emailRequest.setStatus(EmailRequestStatus.FAILED);
             emailRequest.setErrorMessage(e.getMessage());
+            emailRequestRepository.save(emailRequest);
+
             log.error("error sending E-mail. E-mail Request Id= {}", emailRequestId);
+            throw e;
         }
 
         emailRequestRepository.save(emailRequest);
