@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class EmailSenderService {
+public class EmailService {
     private final EmailRequestRepository emailRequestRepository;
     private final EmailEventProducer emailEventProducer;
 
