@@ -2,8 +2,9 @@ package com.java.luismiguel.email_api.api.controller;
 
 import com.java.luismiguel.email_api.api.dto.email.request.SendEmailRequestDTO;
 import com.java.luismiguel.email_api.api.dto.email.response.GetEmailResponseDTO;
+import com.java.luismiguel.email_api.api.dto.email.response.RetryEmailSendResponseDTO;
 import com.java.luismiguel.email_api.api.dto.email.response.SendEmailResponseDTO;
-import com.java.luismiguel.email_api.application.service.email.EmailSenderService;
+import com.java.luismiguel.email_api.application.service.email.EmailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,15 +17,20 @@ import java.util.UUID;
 @RequestMapping("/email")
 @RequiredArgsConstructor
 public class EmailSenderController {
-    private final EmailSenderService emailSenderService;
+    private final EmailService emailService;
 
     @PostMapping("/send")
     public ResponseEntity<SendEmailResponseDTO> sendEmail(@Valid @RequestBody SendEmailRequestDTO requestDTO) {
-        return new ResponseEntity<>(emailSenderService.requestEmailSending(requestDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(emailService.requestEmailSending(requestDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GetEmailResponseDTO> getEmail(@PathVariable UUID id) {
-        return new ResponseEntity<>(emailSenderService.getEmailRequest(id), HttpStatus.OK);
+        return new ResponseEntity<>(emailService.getEmailRequest(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/retry")
+    public ResponseEntity<RetryEmailSendResponseDTO> retryEmailSend(@PathVariable UUID id) {
+        return new ResponseEntity<>(emailService.retryEmail(id), HttpStatus.CREATED);
     }
 }
