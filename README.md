@@ -19,7 +19,7 @@ Asynchronous email sending API built with Spring Boot and Apache Kafka.
 The main goal of this project is to demonstrate asynchronous communication using Kafka, email request persistence, and event-driven architecture concepts.
 
 
-> **Project Status:** In development 🚧 — contributions, issues and pull requests are welcome.
+> **Project Status:** 🚧 Feature complete. Automated tests and observability improvements are currently in progress.
 
 &nbsp;&nbsp;&nbsp;
 
@@ -149,6 +149,7 @@ The current data model is intentionally simple. The system stores email sending 
 - Handle Kafka publishing failures
 - Retry failed email processing attempts
 - Publish failed messages to a Dead Letter Topic
+- Manual email reprocessing endpoint
 
 &nbsp;&nbsp;&nbsp;
 
@@ -170,7 +171,7 @@ The project uses Docker Compose to run:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/email-sender-kafka.git
+git clone https://github.com/LuisMiguelPerinotte/email-sender-kafka.git
 ```
 
 ### 2. Configure environment variables
@@ -198,10 +199,11 @@ Start the `email-api` module.
 
 ## 🌐 API Endpoints
 
-| Method |   Endpoint    |             Description              |
-|--------|---------------|--------------------------------------|
-| `POST` | `/emails`     | Create an asynchronous email request |
-| `GET`  | `/emails/{id}`| Get email request status             |
+| Method | Endpoint             | Description                              |
+|---------|----------------------|------------------------------------------|
+| `POST` | `/emails`            | Create an asynchronous email request     |
+| `GET` | `/emails/{id}`       | Get email request status                 | 
+| `POST` | `/emails/{id}/retry` | Retry a failed email request             |
 
 &nbsp;&nbsp;&nbsp;
 ### POST `/emails`
@@ -212,18 +214,18 @@ Creates a new email request and publishes an event to Kafka.
 
 ```json
 {
-  "emailRequestId": "uuid",
-  "status": "PENDING"
-}
-```
-
-Response `202 Accepted`
-
-```json
-{
   "recipient": "user@email.com",
   "subject": "Hello",
   "body": "Testing Kafka"
+}
+```
+
+Response `201 CREATED`
+
+```json
+{
+  "emailRequestId": "uuid",
+  "status": "PENDING"
 }
 ```
 
@@ -242,6 +244,27 @@ Response `200 OK`
   "status": "PENDING",
   "attempts": 0,
   "createdAt": "2026-05-25T12:00:00"
+}
+```
+
+&nbsp;&nbsp;&nbsp;
+### POST `/emails/{id}/retry`
+
+Requeues a failed email request for processing.
+
+Only requests with status:
+
+- FAILED
+- PUBLISH_FAILED
+
+can be retried.
+
+**Response `201 CREATED`**
+
+```json
+{
+  "emailRequestId": "uuid",
+  "status": "PENDING"
 }
 ```
 
@@ -302,7 +325,7 @@ http://localhost:8025
 
 ## 📈 Next Steps
 
-- Automated tests
+- Unit tests
+- Integration tests
 - Metrics and observability
-- Dockerization improvements
-- Manual email reprocessing endpoint
+- Docker image publishing
