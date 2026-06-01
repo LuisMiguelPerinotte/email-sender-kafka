@@ -1,5 +1,6 @@
 ## 📨 Email Sender Kafka
 
+[![CI - Java Sender Kafka Tests](https://github.com/LuisMiguelPerinotte/email-sender-kafka/actions/workflows/ci.yml/badge.svg)](https://github.com/LuisMiguelPerinotte/email-sender-kafka/actions/workflows/ci.yml)
 ![Java](https://img.shields.io/badge/Java-21-orange?style=flat&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.14-brightgreen?style=flat&logo=springboot&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
