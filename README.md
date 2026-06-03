@@ -260,7 +260,7 @@ Only requests with status:
 
 can be retried.
 
-**Response `201 CREATED`**
+**Response `202 ACCEPTED`**
 
 ```json
 {
