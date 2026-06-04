@@ -20,35 +20,35 @@ public class EmailRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "email_request_id")
-    UUID EmailRequestId;
+    private UUID EmailRequestId;
 
     @Column(name = "recipient", nullable = false)
-    String recipient;
+    private String recipient;
 
     @Column(name = "subject", nullable = false)
-    String subject;
+    private String subject;
 
     @Column(name = "body", nullable = false)
-    String body;
+    private String body;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 50, nullable = false)
-    EmailRequestStatus status;
+    private EmailRequestStatus status;
 
     @Column(name = "attempts", nullable = false)
-    Integer attempts;
+    private Integer attempts;
 
     @Column(name = "error_message")
-    String errorMessage;
+    private String errorMessage;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
-    LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(name = "sent_at")
-    LocalDateTime sentAt;
+    private LocalDateTime sentAt;
 }
