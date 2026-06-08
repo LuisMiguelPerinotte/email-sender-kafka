@@ -31,6 +31,6 @@ public class EmailSenderController {
 
     @PostMapping("/{id}/retry")
     public ResponseEntity<RetryEmailSendResponseDTO> retryEmailSend(@PathVariable UUID id) {
-        return new ResponseEntity<>(emailService.retryEmail(id), HttpStatus.CREATED);
+        return new ResponseEntity<>(emailService.retryEmail(id), HttpStatus.ACCEPTED);
     }
 }
