@@ -20,7 +20,7 @@ Asynchronous email sending API built with Spring Boot and Apache Kafka.
 The main goal of this project is to demonstrate asynchronous communication using Kafka, email request persistence, and event-driven architecture concepts.
 
 
-> **Project Status:** 🚧 Feature complete. Automated tests and observability improvements are currently in progress.
+> **Project Status:** ✅ Feature complete and fully tested. Future improvements may health check endpoints and idempotency to prevent duplicate email processing.
 
 &nbsp;&nbsp;&nbsp;
 
@@ -44,7 +44,7 @@ flowchart LR
     App -->|Publish event| Kafka[Kafka Topic<br/>email.send.requested]
 
     Kafka -->|Consume event| Worker[Email Worker]
-    Worker -->|Use case orchestration| WorkerApp[Application Layer<br/>Email Sending Service]
+    Worker -->|Consume event| WorkerApp[Application Layer<br/>Email Sending Service]
     WorkerApp -->|Read/Update status| DB
     WorkerApp -->|Send email| Mailpit[SMTP Server<br/>Mailpit]
 
@@ -101,7 +101,7 @@ flowchart LR
     I --> J[Update status to FAILED]
 ```
 
-Messages published to the DLT are kept for later inspection or manual reprocessing.
+Messages published to the DLT are preserved for later inspection. Failed requests can be manually reprocessed through the retry endpoint exposed by the API.
 
 &nbsp;&nbsp;&nbsp;
 
@@ -151,6 +151,28 @@ The current data model is intentionally simple. The system stores email sending 
 - Retry failed email processing attempts
 - Publish failed messages to a Dead Letter Topic
 - Manual email reprocessing endpoint
+
+&nbsp;&nbsp;&nbsp;
+
+
+## 🧪 Testing
+
+The project includes automated tests covering different layers of the application.
+
+### Coverage
+
+- Unit tests
+- Controller tests using MockMvc
+- Repository integration tests using Testcontainers
+- Service integration tests using Testcontainers
+
+### Tools
+
+- JUnit 5
+- Mockito
+- MockMvc
+- Testcontainers
+- GitHub Actions
 
 &nbsp;&nbsp;&nbsp;
 
@@ -326,7 +348,5 @@ http://localhost:8025
 
 ## 📈 Next Steps
 
-- Unit tests
-- Integration tests
-- Metrics and observability
-- Docker image publishing
+- Add health check endpoints using Spring Boot Actuator
+- Add worker idempotency to prevent duplicate email processing
