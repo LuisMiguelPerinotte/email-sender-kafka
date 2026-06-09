@@ -1,7 +1,25 @@
-spring:
-  server:
-    port: ${PORT:8080}
+server:
+  port: ${PORT:8080}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: email-sender-kafka
+    "description": "Async email sending service using Kafka"
+    version: 0.6.0
+
+spring:
   datasource:
     url: ${LOCAL_POSTGRES_DB_URL}
     username: ${LOCAL_POSTGRES_DB_USER}
