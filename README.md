@@ -151,6 +151,7 @@ The current data model is intentionally simple. The system stores email sending 
 - Retry failed email processing attempts
 - Publish failed messages to a Dead Letter Topic
 - Manual email reprocessing endpoint
+- Health check endpoints with Spring Boot Actuator
 
 &nbsp;&nbsp;&nbsp;
 
@@ -346,7 +347,18 @@ http://localhost:8025
 <p><img src="./docs/mailpit-preview.png" width="850"/></p>
 
 
+## ❤️ Health Check
+
+The application exposes health monitoring endpoints using Spring Boot Actuator.
+
+### Endpoint
+
+```text
+GET /actuator/health
+```
+&nbsp;&nbsp;&nbsp;
+
+
 ## 📈 Next Steps
 
-- Add health check endpoints using Spring Boot Actuator
 - Add worker idempotency to prevent duplicate email processing
