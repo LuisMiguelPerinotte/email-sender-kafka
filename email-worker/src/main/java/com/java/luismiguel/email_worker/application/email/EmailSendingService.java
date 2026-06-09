@@ -29,6 +29,11 @@ public class EmailSendingService {
         EmailRequest emailRequest = emailRequestRepository.findById(emailRequestId)
                 .orElseThrow(EmailRequestNotFoundException::new);
 
+        if (emailRequest.getStatus() == EmailRequestStatus.SENT) {
+            log.info("Email already processed, ignoring...  EmailRequestId: {}", emailRequest.getEmailRequestId());
+            return;
+        }
+
         emailRequest.setAttempts(emailRequest.getAttempts() + 1);
         log.info("Attempt Number {}", emailRequest.getAttempts());
         emailRequest.setStatus(EmailRequestStatus.PROCESSING);
