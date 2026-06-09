@@ -20,8 +20,6 @@ Asynchronous email sending API built with Spring Boot and Apache Kafka.
 The main goal of this project is to demonstrate asynchronous communication using Kafka, email request persistence, and event-driven architecture concepts.
 
 
-> **Project Status:** ✅ Feature complete and fully tested. Future improvements may health check endpoints and idempotency to prevent duplicate email processing.
-
 &nbsp;&nbsp;&nbsp;
 
 
@@ -152,6 +150,7 @@ The current data model is intentionally simple. The system stores email sending 
 - Publish failed messages to a Dead Letter Topic
 - Manual email reprocessing endpoint
 - Health check endpoints with Spring Boot Actuator
+- Idempotent email processing to prevent duplicate sends
 
 &nbsp;&nbsp;&nbsp;
 
@@ -357,8 +356,3 @@ The application exposes health monitoring endpoints using Spring Boot Actuator.
 GET /actuator/health
 ```
 &nbsp;&nbsp;&nbsp;
-
-
-## 📈 Next Steps
-
-- Add worker idempotency to prevent duplicate email processing
